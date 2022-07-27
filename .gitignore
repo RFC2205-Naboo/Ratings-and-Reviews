@@ -1,2 +1,8 @@
 .env
 node_modules
+characteristic_reviews.csv
+characteristic_reviews.csv:Zone.Identifier
+reviews_photos.csv
+reviews_photos.csv:Zone.Identifier
+reviews.csv
+reviews.csv:Zone.Identifier
