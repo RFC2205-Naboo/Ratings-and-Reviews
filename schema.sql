@@ -1,65 +1,73 @@
 -- DROP DATABASE RandR;
 -- CREATE DATABASE RandR;
+-- Changes: take csv off of table names, created indexes where it mattered most, photoid is now photo_id, made characteristicscsv characteristic_reviews
 
 -- USE RandR;
-DROP TABLE IF EXISTS reviewscsv;
-DROP TABLE IF EXISTS reviews;
+-- DROP TABLE IF EXISTS reviews;
 
-CREATE TABLE reviews (
-  review_id SERIAL,
-  product INT NOT NULL,
-  rating INT NOT NULL,
-  date text,
-  summary text,
-  body text,
-  recommend BOOLEAN,
-  reported BOOLEAN,
-  reviewer_name VARCHAR(250),
-  reviewer_email VARCHAR(250),
-  response text,
-  helpfulness INT NOT NULL
-  -- photos text[]
-);
+-- CREATE TABLE reviews (
+--   review_id SERIAL,
+--   product_id INT NOT NULL,
+--   rating INT NOT NULL,
+--   date text,
+--   summary text,
+--   body text,
+--   recommend BOOLEAN,
+--   reported BOOLEAN,
+--   reviewer_name VARCHAR(250),
+--   reviewer_email VARCHAR(250),
+--   response text,
+--   helpfulness INT NOT NULL
+-- );
 
-CREATE INDEX reviewid ON reviews (review_id);
+-- CREATE INDEX review_id_reviews ON reviews (review_id);
+-- CREATE INDEX product_id_reviews ON reviews (product_id);
 
-SELECT * FROM reviews;
+-- SELECT * FROM reviews;
 
-COPY reviews FROM '/home/dylanph21/Ratings-and-Reviews/reviews.csv' DELIMITER ',' CSV HEADER;
+-- COPY reviews FROM '/home/dylanph21/Ratings-and-Reviews/reviews.csv' DELIMITER ',' CSV HEADER;
 
--- ALTER TABLE reviewscsv ADD photos text[];
+-- ALTER TABLE reviews ADD photos text[];
 
-DROP TABLE IF EXISTS photoscsv;
-DROP TABLE IF EXISTS photos;
+-- DROP TABLE IF EXISTS photos;
 
-CREATE TABLE photos (
-  id SERIAL,
-  review_id INT NOT NULL,
-  url text
-  -- recommended VARCHAR[],
-  -- characteristics VARCHAR[],
-  -- width VARCHAR[],
-  -- comfort VARCHAR[]
-);
+-- CREATE TABLE photos (
+--   photo_id SERIAL,
+--   review_id INT NOT NULL,
+--   url text
+-- );
 
-CREATE INDEX id ON photos (id);
+-- CREATE INDEX review_id_photos ON photos (review_id);
 
-SELECT * FROM photos;
+-- SELECT * FROM photos;
 
-COPY photos FROM '/home/dylanph21/Ratings-and-Reviews/reviews_photos.csv' DELIMITER ',' CSV HEADER;
+-- COPY photos FROM '/home/dylanph21/Ratings-and-Reviews/reviews_photos.csv' DELIMITER ',' CSV HEADER;
 
-DROP TABLE IF EXISTS characteristiccsv;
-DROP TABLE IF EXISTS characteristic;
+-- DROP TABLE IF EXISTS characteristic_reviews;
 
-CREATE TABLE characteristic (
-  char_id SERIAL,
-  characteristic_id text,
-  review_id text,
-  value INT NOT NULL
-);
+-- CREATE TABLE characteristic_reviews (
+--   char_id SERIAL,
+--   characteristic_id INT NOT NULL,
+--   review_id INT NOT NULL,
+--   value INT NOT NULL
+-- );
 
-CREATE INDEX charid ON characteristic (char_id);
+-- CREATE INDEX review_id_charreviews ON characteristic_reviews (review_id);
 
-SELECT * FROM characteristic;
+-- SELECT * FROM characteristic_reviews;
 
-COPY characteristic FROM '/home/dylanph21/Ratings-and-Reviews/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;
+-- COPY characteristic_reviews FROM '/home/dylanph21/Ratings-and-Reviews/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;
+
+-- DROP TABLE IF EXISTS characteristics;
+
+-- CREATE TABLE characteristics (
+--   chars_id SERIAL,
+--   product_id INT NOT NULL,
+--   name VARCHAR(50)
+-- );
+
+-- CREATE INDEX product_id_chars ON characteristics (product_id);
+
+-- SELECT * FROM characteristics;
+
+-- COPY characteristics FROM '/home/dylanph21/Ratings-and-Reviews/characteristics.csv' DELIMITER ',' CSV HEADER;

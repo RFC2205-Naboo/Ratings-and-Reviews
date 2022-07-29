@@ -17,42 +17,29 @@ db.connectAsync()
       console.log('Error connecting to DB', err)
     });
 
-
-const getReviews = () => {
-  return db.queryAsync('SELECT * FROM reviewscsv WHERE product_id = 2')
-    // .db.queryAsync(`SELECT * FROM photoscsv WHERE review_id = ${res[0].rows[0].review_id}`)
+const getReviews = (prodid, page, count) => {
+  return db.queryAsync('SELECT reviews.*, (SELECT jsonb_agg(nested_photos) FROM (SELECT photos.url, photos.photo_id FROM photos WHERE photos.review_id = reviews.review_id) AS nested_photos) AS photos FROM reviews WHERE reviews.product_id = $1', [prodid])
     .then((res) => {
-      db.queryAsync(`SELECT * FROM photoscsv WHERE review_id = 5`)
       console.log('Success DB Side');
-      let dataStruc = {
-        product: res[0].rows[0].product_id,
-        page: 1,
-        count: 5,
-        results: res[0].rows,
-      }
-      // let theDS = dataStruc.results[0].photos =
-      return dataStruc;
-    })
-    .catch((err) => {
-      console.log('dbSide: ', err)
-    })
-};
-
-const getReviews2 = () => {
-  return db.queryAsync('SELECT reviewscsv.*, (SELECT jsonb_agg(nested_photoscsv) FROM (SELECT photoscsv.url, photoscsv.photoid FROM photoscsv WHERE photoscsv.review_id = reviewscsv.review_id) AS nested_photoscsv) AS photos FROM reviewscsv WHERE reviewscsv.product_id = 4')
-    // .db.queryAsync(`SELECT * FROM photoscsv WHERE review_id = ${res[0].rows[0].review_id}`)
-    .then((res) => {
-      // db.queryAsync(`SELECT * FROM photoscsv WHERE review_id = 5`)
-      console.log('Success DB Side');
+      let counter = count || 5;
+      let one = 1;
+      let reviewsFromCount = [];
+      res[0].rows.map((theReviews) => {
+        if (one <= counter) {
+          one++;
+          if (theReviews !== undefined) {
+            reviewsFromCount.push(theReviews);
+          }
+        }
+      });
+      // console.log(reviewsFromCount)
       let resLength = res[0].rows.length
       let dataStruc = {
-        product: res[0].rows[0].product_id,
-        page: 1,
-        count: resLength,
-        results: res[0].rows,
+        product: prodid,
+        page: page || 1,
+        count: counter,
+        results: reviewsFromCount,
       }
-
-      // let theDS = dataStruc.results[0].photos =
       return dataStruc;
     })
     .catch((err) => {
@@ -60,11 +47,23 @@ const getReviews2 = () => {
     })
 };
 
-// getReviews();
+const getMeta = (prodid) => {
+  return db.queryAsync('SELECT * FROM characteristic_reviews WHERE review_id = 66642')
+    .then((res) => {
+      console.log(res[0].rows)
+
+      let dataStruc = {
+        product_id: prodid,
+        ratings:
+      }
+    })
+}
+
+getMeta();
 
 module.exports = {
   getReviews,
-  getReviews2
+  getMeta,
 }
 
 
