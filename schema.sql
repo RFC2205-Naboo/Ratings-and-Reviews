@@ -3,10 +3,11 @@
 
 -- USE RandR;
 DROP TABLE IF EXISTS reviewscsv;
+DROP TABLE IF EXISTS reviews;
 
-CREATE TABLE reviewscsv (
+CREATE TABLE reviews (
   review_id SERIAL,
-  product_id INT NOT NULL,
+  product INT NOT NULL,
   rating INT NOT NULL,
   date text,
   summary text,
@@ -17,16 +18,22 @@ CREATE TABLE reviewscsv (
   reviewer_email VARCHAR(250),
   response text,
   helpfulness INT NOT NULL
+  -- photos text[]
 );
 
-SELECT * FROM reviewscsv;
+CREATE INDEX reviewid ON reviews (review_id);
 
-COPY reviewscsv FROM '/home/dylanph21/Ratings-and-Reviews/reviews.csv' DELIMITER ',' CSV HEADER;
+SELECT * FROM reviews;
+
+COPY reviews FROM '/home/dylanph21/Ratings-and-Reviews/reviews.csv' DELIMITER ',' CSV HEADER;
+
+-- ALTER TABLE reviewscsv ADD photos text[];
 
 DROP TABLE IF EXISTS photoscsv;
+DROP TABLE IF EXISTS photos;
 
-CREATE TABLE photoscsv (
-  photoid SERIAL,
+CREATE TABLE photos (
+  id SERIAL,
   review_id INT NOT NULL,
   url text
   -- recommended VARCHAR[],
@@ -35,19 +42,24 @@ CREATE TABLE photoscsv (
   -- comfort VARCHAR[]
 );
 
-SELECT * FROM photoscsv;
+CREATE INDEX id ON photos (id);
 
-COPY photoscsv FROM '/home/dylanph21/Ratings-and-Reviews/reviews_photos.csv' DELIMITER ',' CSV HEADER;
+SELECT * FROM photos;
+
+COPY photos FROM '/home/dylanph21/Ratings-and-Reviews/reviews_photos.csv' DELIMITER ',' CSV HEADER;
 
 DROP TABLE IF EXISTS characteristiccsv;
+DROP TABLE IF EXISTS characteristic;
 
-CREATE TABLE characteristiccsv (
+CREATE TABLE characteristic (
   char_id SERIAL,
   characteristic_id text,
   review_id text,
   value INT NOT NULL
 );
 
-SELECT * FROM characteristiccsv;
+CREATE INDEX charid ON characteristic (char_id);
 
-COPY characteristiccsv FROM '/home/dylanph21/Ratings-and-Reviews/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;
+SELECT * FROM characteristic;
+
+COPY characteristic FROM '/home/dylanph21/Ratings-and-Reviews/characteristic_reviews.csv' DELIMITER ',' CSV HEADER;
