@@ -13,7 +13,7 @@ app.get('/reviews/*', (req, res) => {
   if (!req.url.includes('/reviews/meta')) {
     db.getReviews(req.query.product_id, req.query.page, req.query.count)
     .then((data) => {
-      console.log('SS Success');
+      // console.log('SS Success');
       res.send(data).status(200)
     })
     .catch(err => {
@@ -22,17 +22,13 @@ app.get('/reviews/*', (req, res) => {
   } else {
     db.getMeta(req.query.product_id)
     .then((data) => {
-      console.log('SS Success');
+      // console.log('SS Success');
       res.send(data).status(200);
     })
     .catch(err => {
       console.log('SS Error: ', err)
     })
   }
-
-});
-
-app.get('/reviews/meta', (req, res) => {
 
 });
 
