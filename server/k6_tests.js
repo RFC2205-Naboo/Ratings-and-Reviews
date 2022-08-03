@@ -8,9 +8,9 @@ export let options = {
 }
 
 export default () => {
-  let reviews = http.get('http://localhost:3000/reviews/');
+  // let reviews = http.get('http://localhost:3000/reviews/');
   // let specificReview = http.get('http://localhost:3000/reviews/?product_id=66642');
-  // let meta = http.get('http://localhost:3000/reviews/meta?product_id=66642');
-  check(reviews, { 'status was 200': r => r.status === 200 });
+  let meta = http.get('http://localhost:3000/reviews/meta?product_id=66642');
+  check(meta, { 'status was 200': r => r.status === 200 });
   sleep(1);
 }

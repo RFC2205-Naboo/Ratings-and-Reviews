@@ -1,8 +1,10 @@
 const {Client} = require('pg');
 const Promise = require('bluebird');
 
+// on deployed version, database: === "randr"
+
 const connection = new Client({
-  host: "localhost",
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   port: "5432",
